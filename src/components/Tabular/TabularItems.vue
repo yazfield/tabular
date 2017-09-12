@@ -3,12 +3,12 @@
       <td v-if="selectable"><v-checkbox primary hide-details v-model="attr.selected" :color="color"></v-checkbox></td>
       <td v-for="(header, i) in headers" :key="i" :class="header.tdclass">
         <edit-cell :editable="header.editable" :label="$t(`${name}.${header.value}`)" :color="color"
-          :value="attr.item[header.value]" @input="setInput(header.value, $event)" 
-          :type="header.type" :suffix="header.suffix" :items="header.items" 
+          :value="attr.item[header.value]" @input="setInput(header.value, $event)"
+          :type="header.type" :suffix="header.suffix" :items="header.items"
           @change="itemChange(attr.index, header.value, $event)" :formatter="formatter"></edit-cell>
       </td>
       <slot name="actions" :attributes="attr" >
-        
+
       </slot>
     </tr>
 </template>
@@ -62,13 +62,13 @@ export default {
   },
   methods: {
     formatter (type, value) {
-      if (type == 'date') {
+      if (type === 'date') {
         return moment(value).format('DD-MM-YYYY')
       }
       return value
     },
     setInput (key, value) {
-      if(value !== undefined) {
+      if (value !== undefined) {
         this.attr.item[key] = value
       }
     },
@@ -77,7 +77,6 @@ export default {
     }
   },
   mounted () {
-    //this.attr = JSON.parse(JSON.stringify(this.attributes))
     this.attr = this.attributes
   },
   components: {

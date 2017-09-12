@@ -3,10 +3,8 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 Vue.use(Vuetify)
-import 'vuetify/dist/vuetify.min.css'
-
 import App from './App'
-import i18n from '../i18n'
+import i18n from './i18n'
 
 Vue.config.productionTip = false
 

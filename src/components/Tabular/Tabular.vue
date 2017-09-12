@@ -1,6 +1,6 @@
 <template>
   <v-card :flat="flat">
-    <tabular-toolbar :name="name" :deletable="deletable" :searchable="searchable" 
+    <tabular-toolbar :name="name" :deletable="deletable" :searchable="searchable"
       :actions="actions" :selected="selected.length"
       @delete-selection="deleteSelection" @action="actionEvent"
       :searchableLabel="$t('searchable')" :search.sync="search"
@@ -11,15 +11,15 @@
     </tabular-toolbar>
 
     <v-data-table :headers="iHeaders" :items="items" v-model="selected" :selected-key="selectedKey"
-      :select-all="selectable" :pagination.sync="pagination" :total-items="totalItems" 
+      :select-all="selectable" :pagination.sync="pagination" :total-items="totalItems"
       :loading="loading" :search="search" :rows-per-page-text="$t('rows_per_page')">
       <template slot="headers" scope="props">
-        <tabular-headers :selectable="selectable" :headers="iHeaders" :pagination.sync="pagination" :all.sync="props.all" 
-          :indeterminate.sync="props.indeterminate" @select-all="toggleAll" @sort="changeSort" 
+        <tabular-headers :selectable="selectable" :headers="iHeaders" :pagination.sync="pagination" :all.sync="props.all"
+          :indeterminate.sync="props.indeterminate" @select-all="toggleAll" @sort="changeSort"
           :filters.sync="filters" @filter="applyFilters" :color="color">
           <template slot="actions">
             <slot name="actions_header"></slot>
-          </template>  
+          </template>
         </tabular-headers>
       </template>
 
@@ -37,16 +37,15 @@
       <template slot="pageText" scope="{ pageStart, pageStop }">
         {{ $t('from_to', {from: pageStart, to: pageStop}) }}
       </template>
-      
+
     </v-data-table>
   </v-card>
 </template>
 
 <script>
-  let axios = window.axios
+  let axios = window.axios || require('axios')
 
   import {encodeQueryData} from '../../helpers.js'
-  import fakeItems from '../../items.js'
   import TabularHeaders from './TabularHeaders.vue'
   import TabularToolbar from './TabularToolbar.vue'
   import TabularItems from './TabularItems.vue'
@@ -168,7 +167,7 @@
           [key]: value
         }).then(response => {
           this.loading = false
-        }).catch(error => {
+        }).catch(_ => {
           this.loading = false
         })
       },
@@ -193,7 +192,7 @@
           if (header.selects) {
             columns = columns.concat(header.selects)
           } else if (header.selects === false) {
-            
+
           } else {
             columns = columns.concat(header.value)
           }
@@ -211,10 +210,10 @@
         // FIXME: construct query from string
         // FIXME: fix backend long relation: subscriber.profile.email ...
         for (let filterName in this.filters) {
-            if (this.filters.hasOwnProperty(filterName)) {
-              let filter = this.filters[filterName]
-              query = this.addFilterToQuery(filterName, filter, query)
-            }
+          if (this.filters.hasOwnProperty(filterName)) {
+            let filter = this.filters[filterName]
+            query = this.addFilterToQuery(filterName, filter, query)
+          }
         }
         let {sortBy, descending, rowsPerPage, page} = this.pagination
         query['columns'] = this.selectedColumns()
@@ -252,30 +251,17 @@
             return Promise.resolve(response.data)
           })
       },
-      getItems () {
-        return fakeItems.slice()
-      },
       deleteSelection () {
         this.$emit('delete-selection', this.selected)
-      },
-      doSomething () {
-        // TODO: implement
       }
     },
-    mounted() {
-      // FIXME: this should be here but it makes the call to the api twice due to 
-      // the pagination watcher, find solution
-      /*this.getDataFromApi()
-        .then(data => {
-          this.items = data.data
-          this.totalItems = data.total
-        })*/
+    mounted () {
       this.iHeaders = this.headers
     },
     components: {
       TabularItems,
       TabularHeaders,
-      TabularToolbar      
+      TabularToolbar
     }
   }
 </script>

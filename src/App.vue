@@ -1,9 +1,8 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <div>
-      <tabular color="teal" name="skills" selectable deletable flat
-          endpoint="/api/skills" :headers="headers" @delete-selection="deleteSkills">
+    <div style="width: 75%; margin: 1px auto">
+      <tabular :flat="false" color="teal" name="skills" selectable deletable
+          endpoint="http://localhost:3000/data" :headers="headers" @delete-selection="deleteSkills">
           <template slot="actions_toolbar">
             <v-btn success outline dark @click.native.stop="showInsertSkill">
               <v-icon success>add</v-icon>
@@ -28,32 +27,61 @@
 </template>
 
 <script>
-import Tabular from './components/Tabular'
+import './app.scss'
+
+import Tabular from './components/Tabular/Tabular'
 
 export default {
   name: 'app',
   components: {
     Tabular
   },
+  data () {
+    return {
+      headers: [
+        {
+          text: 'Name',
+          value: 'name',
+          selects: false,
+          tdclass: 'text-xs-left',
+          editable: true,
+          filterable: true,
+          sortable: true,
+          store: true,
+          rules: [val => val || 'Required']
+        },
+        {
+          text: 'Created at',
+          selects: false,
+          value: 'created_at',
+          tdclass: 'text-xs-left',
+          type: 'date',
+          filterable: true,
+          sortable: true,
+          rules: [val => val || 'Required']
+        }
+      ]
+    }
+  },
   methods: {
-    showInsertSkill() {
+    showInsertSkill () {
 
     },
-    showSkill(item) {
+    showSkill (item) {
 
     },
-    deleteSkill(item) {
+    deleteSkill (item) {
 
     },
+    deleteSkills () {
+
+    }
   }
 }
 </script>
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;

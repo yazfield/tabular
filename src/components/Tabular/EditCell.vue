@@ -10,7 +10,6 @@
 </template>
 
 <script>
-import vmodel from '../../mixins/vmodel.js'
 
 export default {
   name: 'EditCell',
@@ -43,7 +42,7 @@ export default {
     editable: {
       type: Boolean,
       default: false
-    },
+    }
   },
   data () {
     return {
@@ -58,7 +57,7 @@ export default {
     text () {
       if (this.isSelect) {
         let tmp = this.items.filter(item => {
-          return item.value == this.internalValue
+          return item.value === this.internalValue
         })
         if (tmp.length > 0) {
           return this.format(tmp[0].text) + this.suffix
@@ -76,7 +75,7 @@ export default {
     }
   },
   methods: {
-    format(value) {
+    format (value) {
       if (this.formatter) {
         return this.formatter(this.type, value)
       }
@@ -102,6 +101,6 @@ export default {
 </script>
 <style>
   .menu__content.menu__content--auto {
-    
+
   }
 </style>

@@ -10,7 +10,7 @@
       <v-icon v-if="header.sortable !== false" @click="$emit('sort', header.value)">arrow_upward</v-icon>
       {{ header.text }}
       <v-menu v-model="filterMenus[header.value]" :key="'menu-'+i" v-if="header.filterable" offset-y origin="center center" :closeOnContentClick="false">
-        <v-icon slot="activator" class="filter-icon" 
+        <v-icon slot="activator" class="filter-icon"
         :class="{'filter-open': filterMenus[header.value], 'green--text':hasFilter(header.value)}">filter_list</v-icon>
         <div class="small-dialog__content">
           <v-text-field :label="header.value" @input="input(header.value, 'value', $event)"
@@ -23,14 +23,14 @@
             :value="iFilters[header.value] ? iFilters[header.value].to : null" single-line hide-details
             type="number" v-if="header.type == 'number'"></v-text-field>
           <v-select v-if="header.type == 'enum' || header.type == 'select'" :items="header.items"
-            :value="iFilters[header.value] ? iFilters[header.value].value : null" :placeholder="header.value" 
+            :value="iFilters[header.value] ? iFilters[header.value].value : null" :placeholder="header.value"
               @input="input(header.value, 'value', $event)" auto single-line hide-details />
           <v-menu v-if="header.type == 'date'" lazy offset-y style="display: block">
             <v-text-field slot="activator" label="De" single-line hide-details
               :value="iFilters[header.value] ? iFilters[header.value].from : null" :placeholder="header.value"
               @input="input(header.value, 'from', $event)"
               prepend-icon="event" readonly style="padding-bottom: 0;max-width: 200px;"></v-text-field>
-            <v-date-picker no-title scrollable 
+            <v-date-picker no-title scrollable
               :value="iFilters[header.value] ? iFilters[header.value].from : null" :placeholder="header.value"
               @input="input(header.value, 'from', $event)"></v-date-picker>
           </v-menu>
@@ -39,13 +39,13 @@
               :value="iFilters[header.value] ? iFilters[header.value].to : null" :placeholder="header.value"
               @input="input(header.value, 'to', $event)"
               prepend-icon="event" readonly style="padding-bottom: 0;max-width: 200px;"></v-text-field>
-            <v-date-picker no-title scrollable 
+            <v-date-picker no-title scrollable
               :value="iFilters[header.value] ? iFilters[header.value].to : null" :placeholder="header.value"
               @input="input(header.value, 'to', $event)"></v-date-picker>
           </v-menu>
         </div>
         <div class="small-dialog__actions">
-          <v-btn outline primary 
+          <v-btn outline primary
             @click.native="toggleFilter(header.value, false, getKeys(header.type))">{{ $t('cancel') }}</v-btn>
           <v-btn outline primary @click.native="toggleFilter(header.value, true)">{{ $t('filter') }}</v-btn>
         </div>
@@ -57,7 +57,6 @@
   </tr>
 </template>
 <script>
-import _ from 'lodash'
 
 export default {
   name: 'TabularHeaders',
@@ -136,14 +135,14 @@ export default {
     }
   },
   methods: {
-    getKeys(type) {
-      if (!type || type == 'text' || type == 'enum' || type == 'select') {
+    getKeys (type) {
+      if (!type || type === 'text' || type === 'enum' || type === 'select') {
         return ['value']
       } else {
         return ['from', 'to']
       }
     },
-    input(name, key, value) {
+    input (name, key, value) {
       if (this.iFilters[name]) {
         this.iFilters[name][key] = value
       } else {
@@ -152,7 +151,7 @@ export default {
         }
       }
     },
-    toggleFilter(name, value, keys) {
+    toggleFilter (name, value, keys) {
       this.iFilters[name].active = value
       if (value === false) {
         keys.forEach(key => {
@@ -170,9 +169,9 @@ export default {
       let sortableClass = header.sortable === false && header.filterable !== true
       return [
         header.thClass ? header.thClass : '',
-        'column', 
-        sortableClass ? '' : 'sortable', 
-        this.pagination.descending ? 'desc' : 'asc', 
+        'column',
+        sortableClass ? '' : 'sortable',
+        this.pagination.descending ? 'desc' : 'asc',
         header.value === this.pagination.sortBy ? 'active' : '',
         this.hasFilter(header.value) ? 'filter-applied' : ''
       ]
@@ -190,7 +189,7 @@ export default {
   .datatable thead th.column.sortable {
     cursor: auto;
   }
-  .datatable thead th.column.sortable i { 
+  .datatable thead th.column.sortable i {
     cursor: pointer;
   }
   .datatable thead th.column {

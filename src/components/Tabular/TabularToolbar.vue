@@ -13,7 +13,7 @@
           </v-btn>
           <v-list>
             <v-list-tile v-for="(action, i) in actions" :key="i">
-              <v-list-tile-title 
+              <v-list-tile-title
                 @click.native="$emit('action', {call: action.name})"
               >{{ $t(`${name}.${action.name}`) }}</v-list-tile-title>
             </v-list-tile>
@@ -24,7 +24,7 @@
     <v-card-title class="pt-0 pb-0 tabular__header">
       <h6>{{ $t(`${name}.title`) }}</h6>
       <v-spacer></v-spacer>
-      <v-text-field v-if="searchable" append-icon="search" :label="searchableLabel" single-line 
+      <v-text-field v-if="searchable" append-icon="search" :label="searchableLabel" single-line
         hide-details v-model="iSearch"></v-text-field>
       <slot name="actions">
 
@@ -96,14 +96,18 @@ export default {
 }
 </script>
 <style>
+  .tabular-toolbar {
+    position: relative;
+  }
   .tabular-toolbar__bulk-actions {
     padding: 10px 16px;
-    position: absolute; 
-    width: 100%; 
+    position: absolute;
+    width: 100%;
+    height: 100%;
     z-index: 1;
   }
   .selected--rotate i {
-    transform: rotate(180deg) scaleX(-1);  
+    transform: rotate(180deg) scaleX(-1);
   }
   .slide-leave-active,
   .slide-enter-active {

@@ -13,8 +13,16 @@
     "lint": "eslint --ext .js,.vue src test/unit/specs"
   },
   "dependencies": {
+    "axios": "^0.16.2",
+    "body-parser": "^1.18.0",
+    "cors": "^2.8.4",
+    "mongoose": "^4.11.11",
+    "node-sass": "^4.5.3",
+    "nodemon": "^1.12.0",
+    "sass-loader": "^6.0.6",
     "vue": "^2.4.2",
     "vue-i18n": "^7.2.0",
+    "vue-moment": "^2.0.2",
     "vuetify": "^0.15.3"
   },
   "devDependencies": {
@@ -42,7 +50,7 @@
     "eslint-plugin-promise": "^3.4.0",
     "eslint-plugin-standard": "^2.0.1",
     "eventsource-polyfill": "^0.9.6",
-    "express": "^4.14.1",
+    "express": "^4.15.4",
     "extract-text-webpack-plugin": "^2.0.0",
     "file-loader": "^0.11.1",
     "friendly-errors-webpack-plugin": "^1.1.3",
