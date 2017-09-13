@@ -6,6 +6,17 @@ All you need to do is give it an endpoint, and configure it. The returned data m
 
 THIS IS STILL IN AN EARLY DEVELOPMENT STAGE.
 
+## Features
+
+- Render a table with complete functionalities with a simple tag `tabular`
+- Automatically fetches data with ajax
+- Define columns with a simple array of objects
+- Selectable columns with user defined actions that can be executed on them
+- Supports search
+- Supports column filtering
+- Supports column sorting
+- Events to give the user more controle
+
 ## Parameters
 
 **color:** table primary color
