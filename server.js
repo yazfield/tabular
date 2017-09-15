@@ -16,13 +16,13 @@ itemRoutes.route('/data').get(function (req, res) {
         id: 1,
         name: 'Skill',
         slug: 'skill',
-        created_at: '14-11-1999'
+        created_at: '2016-03-12'
       },
       {
         id: 11,
         name: 'Skill 1',
         slug: 'skill1',
-        created_at: '14-11-1999'
+        created_at: '2016-03-12'
       }
     ]
   })

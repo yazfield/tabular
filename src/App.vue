@@ -1,15 +1,17 @@
 <template>
   <div id="app">
-    <div style="width: 75%; margin: 1px auto">
-      <tabular :flat="false" color="teal" name="skills" selectable deletable
-          endpoint="http://localhost:3000/data" :headers="headers" @delete-selection="deleteSkills">
+    <v-app>
+      <v-layout row>
+        <v-flex>
+      <tabular color="green" name="skills" selectable deletable endpoint="http://localhost:3000/data"
+           :headers="headers" @delete-selection="deleteSkills" :actions="actions">
           <template slot="actions_toolbar">
             <v-btn success outline dark @click.native.stop="showInsertSkill">
               <v-icon success>add</v-icon>
             </v-btn>
           </template>
-          <template slot="actions_header">
-            <th><p>{{ $t('actions') }}</p></th>
+          <template slot="actions_header" scope="props">
+            <th>{{ $t('actions') }}</th>
           </template>
           <template slot="actions_item" scope="props">
             <td>
@@ -22,12 +24,13 @@
             </td>
           </template>
         </tabular>
-    </div>
+        </v-flex>
+      </v-layout>
+    </v-app>
   </div>
 </template>
 
 <script>
-import './app.scss'
 
 import Tabular from './components/Tabular/Tabular'
 
@@ -38,12 +41,12 @@ export default {
   },
   data () {
     return {
+      actions: [{name: 'test', text: 'test'}, {name: 'test2', text: 'test 2'}],
       headers: [
         {
           text: 'Name',
           value: 'name',
           selects: false,
-          tdclass: 'text-xs-left',
           editable: true,
           filterable: true,
           sortable: true,
@@ -54,7 +57,6 @@ export default {
           text: 'Created at',
           selects: false,
           value: 'created_at',
-          tdclass: 'text-xs-left',
           type: 'date',
           filterable: true,
           sortable: true,
@@ -64,26 +66,21 @@ export default {
     }
   },
   methods: {
+    test (props) {
+      console.log('header props', props)
+    },
     showInsertSkill () {
-
+      console.log('showInsertSkill')
     },
     showSkill (item) {
-
+      console.log('showSkill', item)
     },
     deleteSkill (item) {
-
+      console.log('deleteSkill', item)
     },
-    deleteSkills () {
-
+    deleteSkills (selected) {
+      console.log('deleteSkills', selected)
     }
   }
 }
 </script>
-
-<style>
-#app {
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>

@@ -1,10 +1,9 @@
 <template>
-  <v-card :flat="flat">
+  <v-card :flat="flat" class="tabular">
     <tabular-toolbar :name="name" :deletable="deletable" :searchable="searchable"
-      :actions="actions" :selected="selected.length"
-      @delete-selection="deleteSelection" @action="actionEvent"
-      :searchableLabel="$t('searchable')" :search.sync="search"
-      :selectable="selectable" :color="color" :headers-length="iHeaders.length - 1">
+      :actions="actions" :selected="selected.length" :headers-length="iHeaders.length - 1"
+      @delete-selection="deleteSelection" @action="actionEvent" :selectable="selectable"
+      :searchableLabel="$t('searchable') || searchableText" :search.sync="search" :color="color" >
       <template slot="actions">
         <slot name="actions_toolbar"></slot>
       </template>
@@ -25,7 +24,7 @@
 
       <template slot="items" scope="props">
         <tabular-items :attributes.sync="props" :headers="iHeaders" :color="color" :name="name"
-          :selectable="selectable" @item-change="itemChange">
+          :selectable="selectable" @item-change="itemChange" :date-format="dateFormat">
           <template slot="actions" scope="props">
             <slot name="actions_item" :attributes="props.attributes" scope="props">
 
@@ -37,7 +36,6 @@
       <template slot="pageText" scope="{ pageStart, pageStop }">
         {{ $t('from_to', {from: pageStart, to: pageStop}) }}
       </template>
-
     </v-data-table>
   </v-card>
 </template>
@@ -98,6 +96,14 @@
       },
       query: {
         type: Object
+      },
+      dateFormat: {
+        type: String,
+        default: 'YYYY-MM-DD'
+      },
+      dateDisplayFormat: {
+        type: String,
+        default: 'DD-MM-YYYY'
       }
     },
     data () {
@@ -207,8 +213,7 @@
       makeUrl () {
         let url = this.endpoint + '?'
         let query = {}
-        // FIXME: construct query from string
-        // FIXME: fix backend long relation: subscriber.profile.email ...
+        // FIXME: reconstruct query from page url
         for (let filterName in this.filters) {
           if (this.filters.hasOwnProperty(filterName)) {
             let filter = this.filters[filterName]
@@ -270,7 +275,13 @@
   .fade-enter-active, .fade-leave-active {
     transition: opacity .4s
   }
-  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  .fade-enter, .fade-leave-to {
     opacity: 0
+  }
+  table.table thead th>div {
+    width: auto;
+  }
+  table.table td {
+    text-align: center;
   }
 </style>

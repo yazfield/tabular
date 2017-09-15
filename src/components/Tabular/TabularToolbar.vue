@@ -7,15 +7,14 @@
         <v-btn icon v-if="deletable" @click.native="$emit('delete-selection')">
           <v-icon>delete</v-icon>
         </v-btn>
-        <v-menu offset-y origin="center center" v-if="actions.length > 0">
+        <v-menu v-if="actions.length > 0" offset-y>
           <v-btn icon slot="activator">
             <v-icon>more_vert</v-icon>
           </v-btn>
           <v-list>
-            <v-list-tile v-for="(action, i) in actions" :key="i">
+            <v-list-tile v-for="(action, i) in actions" :key="i" @click.native="$emit('action', {call: action.name})">
               <v-list-tile-title
-                @click.native="$emit('action', {call: action.name})"
-              >{{ $t(`${name}.${action.name}`) }}</v-list-tile-title>
+              >{{ action.text || $t(`${name}.${action.name}`) }}</v-list-tile-title>
             </v-list-tile>
           </v-list>
         </v-menu>
@@ -95,27 +94,3 @@ export default {
   }
 }
 </script>
-<style>
-  .tabular-toolbar {
-    position: relative;
-  }
-  .tabular-toolbar__bulk-actions {
-    padding: 10px 16px;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-  }
-  .selected--rotate i {
-    transform: rotate(180deg) scaleX(-1);
-  }
-  .slide-leave-active,
-  .slide-enter-active {
-    transition: all .5s ease;
-    overflow: hidden;
-    max-height: 50px;
-  }
-  .slide-enter, .slide-leave-to {
-    max-height: 0;
-  }
-</style>

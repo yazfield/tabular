@@ -1,16 +1,16 @@
 <template>
-    <tr :active="attr.selected">
-      <td v-if="selectable"><v-checkbox primary hide-details v-model="attr.selected" :color="color"></v-checkbox></td>
-      <td v-for="(header, i) in headers" :key="i" :class="header.tdclass">
-        <edit-cell :editable="header.editable" :label="$t(`${name}.${header.value}`)" :color="color"
-          :value="attr.item[header.value]" @input="setInput(header.value, $event)"
-          :type="header.type" :suffix="header.suffix" :items="header.items"
-          @change="itemChange(attr.index, header.value, $event)" :formatter="formatter"></edit-cell>
-      </td>
-      <slot name="actions" :attributes="attr" >
+  <tr :active="attr.selected">
+    <td v-if="selectable"><v-checkbox primary hide-details v-model="attr.selected" :color="color"></v-checkbox></td>
+    <td v-for="(header, i) in headers" :key="i" :class="header.tdclass" style="position: relative">
+      <edit-cell :editable="header.editable" :label="$t(`${name}.${header.value}`)" :color="color"
+        :value="attr.item[header.value]" @input="setInput(header.value, $event)"
+        :type="header.type" :suffix="header.suffix" :items="header.items"
+        @change="itemChange(attr.index, header.value, $event)" :formatter="formatter"></edit-cell>
+    </td>
+    <slot name="actions" :attributes="attr" >
 
-      </slot>
-    </tr>
+    </slot>
+  </tr>
 </template>
 
 <script>
@@ -38,7 +38,8 @@ export default {
     attributes: {
       type: Object,
       required: true
-    }
+    },
+    dateFormat: String
   },
   data () {
     return {
@@ -63,7 +64,7 @@ export default {
   methods: {
     formatter (type, value) {
       if (type === 'date') {
-        return moment(value).format('DD-MM-YYYY')
+        return moment(value, this.dateFormat).format('DD-MM-YYYY')
       }
       return value
     },

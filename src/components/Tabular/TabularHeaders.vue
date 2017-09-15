@@ -1,5 +1,5 @@
 <template>
-  <tr>
+  <tr style="position: relative">
     <th v-if="selectable">
       <v-checkbox primary hide-details @click.native="$emit('select-all')" :input-value="iAll"
         :indeterminate="iIndeterminate" :color="color"></v-checkbox>

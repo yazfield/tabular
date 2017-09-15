@@ -1,12 +1,12 @@
 <template>
-  <v-edit-dialog style="z-index: 99" v-if="editable" lazy large @save="maybeEmitChange" @cancel="internalValue = value">
+  <v-edit-dialog v-if="editable" lazy large @save="maybeEmitChange" @cancel="internalValue = value">
     {{ text }}
     <v-select v-if="isSelect" slot="input" :items="items" hide-details bottom single-line
       v-model="internalValue" :placeholder="label" style="z-index: 999"/>
     <v-text-field v-else slot="input" :label="label" :value="internalValue" single-line
       @change="change" :type="type" :hide-details="true"></v-text-field>
   </v-edit-dialog>
-  <div style="padding-top: 24px;" v-else>{{ text }}</div>
+  <div v-else>{{ text }}</div>
 </template>
 
 <script>
@@ -99,8 +99,8 @@ export default {
   }
 }
 </script>
-<style>
-  .menu__content.menu__content--auto {
-
+<style scoped>
+  .menu__content.small-dialog__content {
+    background: white;
   }
 </style>
