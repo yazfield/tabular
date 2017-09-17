@@ -41,9 +41,9 @@
 </template>
 
 <script>
-  let axios = window.axios || require('axios')
+  const axios = window.axios || require('axios')
 
-  import {encodeQueryData} from '../../helpers.js'
+  import {encodeQueryData} from './helpers.js'
   import tr from './translate.js'
   import TabularHeaders from './TabularHeaders.vue'
   import TabularToolbar from './TabularToolbar.vue'
@@ -58,16 +58,31 @@
     },
     mixins: [tr],
     props: {
+      actions: {
+        type: Array,
+        default: _ => { return [] }
+      },
+      color: {
+        type: String,
+        default: 'teal'
+      },
+      dateDisplayFormat: {
+        type: String,
+        default: 'DD-MM-YYYY'
+      },
+      dateFormat: {
+        type: String,
+        default: 'YYYY-MM-DD'
+      },
+      deletable: {
+        type: Boolean,
+        default: false
+      },
       dontLoad: {
         type: Boolean,
         default: false
       },
-      searchableLabel: String,
-      color: {
-        type: String,
-        default: 'red'
-      },
-      name: {
+      endpoint: {
         type: String,
         required: true
       },
@@ -75,64 +90,65 @@
         type: Boolean,
         default: false
       },
-      selectable: {
-        type: Boolean,
-        default: false
+      headers: {
+        type: Array,
+        default: []
+      },
+      name: {
+        type: String,
+        required: true
+      },
+      query: {
+        type: Object
       },
       searchable: {
         type: Boolean,
         default: false
       },
-      deletable: {
+      selectable: {
         type: Boolean,
         default: false
       },
-      actions: {
-        type: Array,
-        default: _ => { return [] }
-      },
+      searchableLabel: String,
       selectedKey: {
         default: 'id'
-      },
-      endpoint: {
-        type: String,
-        required: true
-      },
-      headers: {
-        type: Array,
-        default: []
-      },
-      query: {
-        type: Object
-      },
-      dateFormat: {
-        type: String,
-        default: 'YYYY-MM-DD'
-      },
-      dateDisplayFormat: {
-        type: String,
-        default: 'DD-MM-YYYY'
       }
     },
     data () {
       return {
-        loaded: false,
         filters: this.query,
-        loading: true,
-        selected: [],
-        search: '',
+        iHeaders: this.headers,
         items: [],
-        totalItems: 0,
         pagination: {
           sortBy: '',
           descending: true,
           rowsPerPage: 5,
           page: 1
         },
-        iHeaders: []
+        loaded: false,
+        loading: true,
+        search: '',
+        selected: [],
+        totalItems: 0
       }
     },
     watch: {
+      dontLoad (val) {
+        if (!this.loaded) {
+          this.getDataFromApi()
+            .then(data => {
+              this.items = data.data
+              this.totalItems = data.total
+              this.$emit('loaded', data.data)
+            })
+        }
+      },
+      headers: {
+        handler (val) {
+          this.iHeaders = val
+        },
+        deep: true
+      },
       pagination: {
         handler () {
           if (!this.dontLoad) {
@@ -145,25 +161,29 @@
           }
         },
         deep: true
-      },
-      headers: {
-        handler (val) {
-          this.iHeaders = val
-        },
-        deep: true
-      },
-      dontLoad (val) {
-        if (!this.loaded) {
-          this.getDataFromApi()
-            .then(data => {
-              this.items = data.data
-              this.totalItems = data.total
-              this.$emit('loaded', data.data)
-            })
-        }
       }
     },
     methods: {
+      actionEvent (e) {
+        this.$emit(e.call, this.selected)
+      },
+      addFilterToQuery (filterName, filter, query) {
+        if (filterName.indexOf('.') !== false) {
+          filterName = filterName.replace(/\./gi, '__')
+        }
+        if (filter.active) {
+          if (filter.value) {
+            query[filterName] = filter.value
+          }
+          if (filter.from) {
+            query[`${filterName}_from`] = filter.from
+          }
+          if (filter.to) {
+            query[`${filterName}_to`] = filter.to
+          }
+        }
+        return query
+      },
       applyFilters () {
         if (!this.dontLoad) {
           this.getDataFromApi()
@@ -172,6 +192,26 @@
               this.totalItems = data.total
             })
         }
+      },
+      changeSort (column) {
+        if (this.pagination.sortBy === column) {
+          this.pagination.descending = !this.pagination.descending
+        } else {
+          this.pagination.sortBy = column
+          this.pagination.descending = false
+        }
+      },
+      deleteSelection () {
+        this.$emit('delete-selection', this.selected)
+      },
+      getDataFromApi () {
+        this.loading = true
+        return axios.get(this.makeUrl())
+          .then(response => {
+            this.loaded = true
+            this.loading = false
+            return Promise.resolve(response.data)
+          })
       },
       itemChange ({ index, key, value }) {
         this.loading = true
@@ -184,39 +224,6 @@
         }).catch(_ => {
           this.loading = false
         })
-      },
-      actionEvent (e) {
-        console.log('actionEvent', e)
-      },
-      toggleAll () {
-        if (this.selected.length) this.selected = []
-        else this.selected = this.items.slice()
-      },
-      changeSort (column) {
-        if (this.pagination.sortBy === column) {
-          this.pagination.descending = !this.pagination.descending
-        } else {
-          this.pagination.sortBy = column
-          this.pagination.descending = false
-        }
-      },
-      selectedColumns () {
-        let columns = []
-        this.iHeaders.forEach(header => {
-          if (header.selects) {
-            columns = columns.concat(header.selects)
-          } else if (header.selects === false) {
-
-          } else {
-            columns = columns.concat(header.value)
-          }
-        })
-
-        if (columns.length) {
-          columns.push('id')
-          return columns.join(',')
-        }
-        return ''
       },
       makeUrl () {
         let url = this.endpoint + '?'
@@ -238,38 +245,28 @@
 
         return url
       },
-      addFilterToQuery (filterName, filter, query) {
-        if (filterName.indexOf('.') !== false) {
-          filterName = filterName.replace(/\./gi, '__')
+      selectedColumns () {
+        let columns = []
+        this.iHeaders.forEach(header => {
+          if (header.selects) {
+            columns = columns.concat(header.selects)
+          } else if (header.selects === false) {
+
+          } else {
+            columns = columns.concat(header.value)
+          }
+        })
+
+        if (columns.length) {
+          columns.push('id')
+          return columns.join(',')
         }
-        if (filter.active) {
-          if (filter.value) {
-            query[filterName] = filter.value
-          }
-          if (filter.from) {
-            query[`${filterName}_from`] = filter.from
-          }
-          if (filter.to) {
-            query[`${filterName}_to`] = filter.to
-          }
-        }
-        return query
+        return ''
       },
-      getDataFromApi () {
-        this.loading = true
-        return axios.get(this.makeUrl())
-          .then(response => {
-            this.loaded = true
-            this.loading = false
-            return Promise.resolve(response.data)
-          })
-      },
-      deleteSelection () {
-        this.$emit('delete-selection', this.selected)
+      toggleAll () {
+        if (this.selected.length) this.selected = []
+        else this.selected = this.items.slice()
       }
-    },
-    mounted () {
-      this.iHeaders = this.headers
     }
   }
 </script>

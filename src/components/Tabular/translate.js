@@ -14,6 +14,7 @@ export default {
       if (this.$t) {
         return this.$t(name, params)
       }
+      return name
     }
   }
 }
