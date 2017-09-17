@@ -2,7 +2,7 @@
   <div class="tabular-toolbar">
     <transition name="fade">
       <v-card-title v-show="selected > 0" :class="[color]" class="lighten-4 tabular-toolbar__bulk-actions">
-        <span :class="color + '--text text--darken-2'">{{ $t(`${name}.selected`, { selected }) }}</span>
+        <span :class="color + '--text text--darken-2'">{{ tr('selected', { selected }, name) }}</span>
         <v-spacer></v-spacer>
         <v-btn icon v-if="deletable" @click.native="$emit('delete-selection')">
           <v-icon>delete</v-icon>
@@ -14,16 +14,16 @@
           <v-list>
             <v-list-tile v-for="(action, i) in actions" :key="i" @click.native="$emit('action', {call: action.name})">
               <v-list-tile-title
-              >{{ action.text || $t(`${name}.${action.name}`) }}</v-list-tile-title>
+              >{{ action.text || tr(`${name}.${action.name}`) }}</v-list-tile-title>
             </v-list-tile>
           </v-list>
         </v-menu>
       </v-card-title>
     </transition>
     <v-card-title class="pt-0 pb-0 tabular__header">
-      <h6>{{ $t(`${name}.title`) }}</h6>
+      <h6>{{ tr('title', {}, name) }}</h6>
       <v-spacer></v-spacer>
-      <v-text-field v-if="searchable" append-icon="search" :label="searchableLabel" single-line
+      <v-text-field v-if="searchable" append-icon="search" :label="tr('searchableLabel')" single-line
         hide-details v-model="iSearch"></v-text-field>
       <slot name="actions">
 

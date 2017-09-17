@@ -24,7 +24,8 @@
 
       <template slot="items" scope="props">
         <tabular-items :attributes.sync="props" :headers="iHeaders" :color="color" :name="name"
-          :selectable="selectable" @item-change="itemChange" :date-format="dateFormat">
+          :selectable="selectable" @item-change="itemChange" :date-format="dateFormat"
+          :date-display-format="dateDisplayFormat">
           <template slot="actions" scope="props">
             <slot name="actions_item" :attributes="props.attributes" scope="props">
 

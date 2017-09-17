@@ -1,6 +1,6 @@
 export default {
   methods: {
-    tr (name, params) {
+    tr (name, params, prefix) {
       let text = ''
       if (this[name]) {
         for (let key in params) {
@@ -12,7 +12,7 @@ export default {
         return text || this[name]
       }
       if (this.$t) {
-        return this.$t(name, params)
+        return this.$t(prefix ? `${prefix}.${name}` : name, params)
       }
       return name
     }
