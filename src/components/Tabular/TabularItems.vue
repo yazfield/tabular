@@ -15,6 +15,7 @@
 
 <script>
 import moment from 'moment'
+import tr from './translate.js'
 import EditCell from './EditCell.vue'
 
 export default {
@@ -22,6 +23,7 @@ export default {
   components: {
     EditCell
   },
+  mixins: [tr],
   props: {
     attributes: {
       type: Object,

@@ -3,6 +3,7 @@ export default {
     tr (name, params, prefix) {
       let text = ''
       if (this[name]) {
+        console.log(name, prefix)
         for (let key in params) {
           if (params.hasOwnProperty(key)) {
             let value = params[key]

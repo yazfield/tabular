@@ -5,10 +5,12 @@ export default {
   actions: 'Actions',
   skills: {
     created_at: 'Created at',
-    name: 'Name',
-    title: 'Skills',
-    selected: '{selected} selected'
+    nameLabel: 'Name',
+    titleLabel: 'Skills',
+    selectedLabel: '{selected} selected'
   },
   cancel: 'Cancel',
-  filter: 'Filter'
+  filter: 'Filter',
+  from: 'From',
+  to: 'To'
 }
