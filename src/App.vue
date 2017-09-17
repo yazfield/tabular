@@ -4,7 +4,8 @@
       <v-layout row>
         <v-flex>
       <tabular color="green" name="skills" selectable deletable endpoint="http://localhost:3000/data"
-           :headers="headers" @delete-selection="deleteSkills" :actions="actions">
+           :headers="headers" @delete-selection="deleteSkills" :actions="actions" searchable
+           searchable-label="hawes">
           <template slot="actions_toolbar">
             <v-btn success outline dark @click.native.stop="showInsertSkill">
               <v-icon success>add</v-icon>

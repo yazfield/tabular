@@ -3,7 +3,7 @@
     <tabular-toolbar :name="name" :deletable="deletable" :searchable="searchable"
       :actions="actions" :selected="selected.length" :headers-length="iHeaders.length - 1"
       @delete-selection="deleteSelection" @action="actionEvent" :selectable="selectable"
-      :searchableLabel="$t('searchable') || searchableText" :search.sync="search" :color="color" >
+      :searchableLabel="tr('searchableLabel')" :search.sync="search" :color="color" >
       <template slot="actions">
         <slot name="actions_toolbar"></slot>
       </template>
@@ -11,7 +11,7 @@
 
     <v-data-table :headers="iHeaders" :items="items" v-model="selected" :selected-key="selectedKey"
       :select-all="selectable" :pagination.sync="pagination" :total-items="totalItems"
-      :loading="loading" :search="search" :rows-per-page-text="$t('rows_per_page')">
+      :loading="loading" :search="search" :rows-per-page-text="tr('rowsPerPageText')">
       <template slot="headers" scope="props">
         <tabular-headers :selectable="selectable" :headers="iHeaders" :pagination.sync="pagination" :all.sync="props.all"
           :indeterminate.sync="props.indeterminate" @select-all="toggleAll" @sort="changeSort"
@@ -34,7 +34,7 @@
       </template>
 
       <template slot="pageText" scope="{ pageStart, pageStop }">
-        {{ $t('from_to', {from: pageStart, to: pageStop}) }}
+        {{ tr('fromToText', {from: pageStart, to: pageStop}) }}
       </template>
     </v-data-table>
   </v-card>
@@ -44,17 +44,25 @@
   let axios = window.axios || require('axios')
 
   import {encodeQueryData} from '../../helpers.js'
+  import tr from './translate.js'
   import TabularHeaders from './TabularHeaders.vue'
   import TabularToolbar from './TabularToolbar.vue'
   import TabularItems from './TabularItems.vue'
 
   export default {
     name: 'Tabular',
+    components: {
+      TabularItems,
+      TabularHeaders,
+      TabularToolbar
+    },
+    mixins: [tr],
     props: {
       dontLoad: {
         type: Boolean,
         default: false
       },
+      searchableLabel: String,
       color: {
         type: String,
         default: 'red'
@@ -262,11 +270,6 @@
     },
     mounted () {
       this.iHeaders = this.headers
-    },
-    components: {
-      TabularItems,
-      TabularHeaders,
-      TabularToolbar
     }
   }
 </script>
