@@ -14,14 +14,14 @@ itemRoutes.route('/data').get(function (req, res) {
     data: [
       {
         id: 1,
-        name: 'Skill',
-        slug: 'skill',
+        name: 'Javascript',
+        slug: 'javascript',
         created_at: '2016-03-12'
       },
       {
         id: 11,
-        name: 'Skill 1',
-        slug: 'skill1',
+        name: 'PHP',
+        slug: 'php',
         created_at: '2016-03-12'
       }
     ]

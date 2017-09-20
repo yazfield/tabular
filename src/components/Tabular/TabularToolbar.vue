@@ -1,7 +1,8 @@
 <template>
-  <div class="tabular-toolbar">
+  <div class="tabular-toolbar" style="position: relative">
     <transition name="fade">
-      <v-card-title v-show="selected > 0" :class="[color]" class="lighten-4 tabular-toolbar__bulk-actions">
+      <v-card-title v-show="selected > 0" :class="[color]"
+        class="lighten-4 tabular-toolbar__bulk-actions">
         <span :class="color + '--text text--darken-2'">{{ tr('selectedLabel', { selected }, name) }}</span>
         <v-spacer></v-spacer>
         <v-btn icon v-if="deletable" @click.native="$emit('delete-selection')">
@@ -12,7 +13,7 @@
             <v-icon>more_vert</v-icon>
           </v-btn>
           <v-list>
-            <v-list-tile v-for="(action, i) in actions" :key="i" @click.native="$emit('action', {call: action.name})">
+            <v-list-tile v-for="(action, i) in actions" :key="i" @click="$emit('action', {call: action.name})">
               <v-list-tile-title
               >{{ action.text || tr(`${name}.${action.name}`) }}</v-list-tile-title>
             </v-list-tile>
@@ -24,7 +25,7 @@
       <h6>{{ tr('titleLabel', {}, name) }}</h6>
       <v-spacer></v-spacer>
       <v-text-field v-if="searchable" append-icon="search" :label="tr('searchableLabel')" single-line
-        hide-details v-model="iSearch"></v-text-field>
+         v-model="iSearch" class="mr-4" style="max-width: 20%"></v-text-field>
       <slot name="actions">
 
       </slot>

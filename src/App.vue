@@ -1,11 +1,10 @@
 <template>
   <div id="app">
     <v-app>
-      <v-layout row>
-        <v-flex>
-      <tabular color="green" name="skills" selectable deletable endpoint="http://localhost:3000/data"
-           :headers="headers" @delete-selection="deleteSkills" :actions="actions" searchable
-           searchable-label="hawes">
+      <v-container>
+      <h1 class="text-xs-center mt-3 mb-5">Tabular example</h1>
+      <tabular style="width: 60%; margin: 0 auto" color="green" name="skills" selectable deletable endpoint="http://localhost:3000/data"
+           :headers="headers" @delete-selection="deleteSkills" :actions="actions" searchable>
           <template slot="actions_toolbar">
             <v-btn success outline dark @click.native.stop="showInsertSkill">
               <v-icon success>add</v-icon>
@@ -25,8 +24,7 @@
             </td>
           </template>
         </tabular>
-        </v-flex>
-      </v-layout>
+      </v-container>
     </v-app>
   </div>
 </template>
