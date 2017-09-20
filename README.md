@@ -1,6 +1,6 @@
 # Tabular
 
-A table component for vue with embedded ajax pagination, sorting and filtering based on data type based on vuetify.
+A table component for vue with embedded ajax pagination, sorting and filtering based on vuetify.
 
 All you need to do is give it an endpoint, and configure it. The returned data must be a Laravel Pagination object.
 
